@@ -29,6 +29,10 @@ app.get("/admission", (req, res) => {
     res.sendFile(__dirname + "/admission.html");
 });
 
+app.all("*", (req, res) => {
+    res.status(404).send("<h1>ERROR: 404</h1><hr><h1>This path was not found</h1>");
+});
+
 
 app.listen(3000, () => {
     console.log(__dirname);
