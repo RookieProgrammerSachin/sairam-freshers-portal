@@ -1,0 +1,54 @@
+@media only screen and ( max-width: 600px ) {
+    body{
+        -webkit-tap-highlight-color: transparent;
+    }
+    
+    .landing-container{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rules-container{
+        min-height: unset;
+    }
+
+    .loading{
+        position: fixed;
+    }
+
+    .loading img{
+        width: 80%;
+    }
+
+    nav{
+        grid-template-columns: none;
+        grid-template-rows: 1fr 1fr 1fr;
+        gap: 2rem;
+    }
+
+    .main-container{
+        grid-template-columns: none;
+        grid-template-rows: 0.7fr 2fr;
+    }
+
+    .schedule-item{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: start;
+        gap: 1rem;
+        padding: 0.5rem;
+    }
+
+    .schedule-icon, .schedule-title{
+        grid-column: span 1;
+    }
+
+    .schedule-icon{
+        width: 3rem;
+    }
+
+    .schedule-link{
+        grid-column: span 2;
+    }
+
+}

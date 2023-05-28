@@ -7,21 +7,22 @@
     <title>Orientation schedule | Sairam Fresher's portal</title>
     <link rel="stylesheet" href="public/styles/styles.css">
     <link rel="stylesheet" href="public/styles/utility.css">
+    <link rel="stylesheet" href="public/styles/mobile.css">
 </head>
 <body>
     <div class="loading">
         <img src="public/images/clg.png" alt="Sairam Institutions">
         <span class="loader"></span>
     </div>
-
+    
     <nav>
         <img src="public/images/clg.png" alt="Sairam Institutions" class="nav-logo">
         <h1 class="nav-heading ff-inter ">Sairam Freshers Portal [2023 - 2024]</h1>
         <button class="user-btn ff-inter"> <img src="public/images/user-128-32.png" alt="icon user"> 
-            Welcome, USER <img src="public/images/chevron-down.svg" class="icon chevron-down">
+            <h3 class="user-btn-name">Welcome, USER</h3> <img src="public/images/chevron-down.svg" class="icon chevron-down">
             <div class="user-menu">
                 <a href="#" class="user-menu-link">Profile</a>
-                <a href="/" class="user-menu-link">Sign out</a>
+                <a href="#" class="user-menu-link sign-out">Sign out</a>
             </div>
         </button>
     </nav>
@@ -38,27 +39,18 @@
             <h1>Hello, USER!</h1>
             <p class="fs-2s">Today's chedule:</p>
             <div class="schedule-wrapper">
-
-                <div class="schedule-item">
+                <span class="loader"></span>
+                
+                <!-- <div class="schedule-item">
                     <img src="public/images/conference.png" alt="Online Meeting" class="schedule-icon">
                     <h3 class="schedule-title">Meeting with Sachin</h3>
                     <a href="https://meet.google.com/fwz-xqzn-tjw/" class="schedule-link ff-inter">https://meet.google.com/fwz-xqzn-tjw/</a>
-                </div>
-                <div class="schedule-item">
-                    <img src="public/images/conference.png" alt="Online Meeting" class="schedule-icon">
-                    <h3 class="schedule-title">Meeting with Sachin</h3>
-                    <a href="https://meet.google.com/fwz-xqzn-tjw/" class="schedule-link ff-inter">https://meet.google.com/fwz-xqzn-tjw/</a>
-                </div>
-                <div class="schedule-item">
-                    <img src="public/images/conference.png" alt="Online Meeting" class="schedule-icon">
-                    <h3 class="schedule-title">Meeting with Sachin</h3>
-                    <a href="https://meet.google.com/fwz-xqzn-tjw/" class="schedule-link ff-inter">https://meet.google.com/fwz-xqzn-tjw/</a>
-                </div>
+                </div> -->
 
             </div>
         </div>
     </main>
 
-    <script src="/public/js/orientation.js"></script>
+    <script src="/public/js/orientation.js" type="module"></script>
 </body>
 </html>
