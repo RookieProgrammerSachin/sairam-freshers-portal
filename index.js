@@ -28,6 +28,10 @@ app.get("/", async (req, res) => {
     res.sendFile(__dirname + "/index.html");
 });
 
+app.get("/admin", async (req, res) => {
+    res.sendFile(__dirname + "/admin.html");
+});
+
 // app.post("/login", async(req, res) => {
 
 //     const username = req.body.email + "@sairamfreshers.com";
