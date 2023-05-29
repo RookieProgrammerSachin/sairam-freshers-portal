@@ -300,3 +300,80 @@ nav{
     pointer-events: none;
     cursor: default;
 }
+
+.admin-container{
+    background: rgb(228, 228, 228);
+    max-width: 70%;
+    border: 1px solid silver;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+    padding: 2rem 4rem;
+    margin: auto;
+    margin-top: 3rem;
+}
+
+ol{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem
+}
+
+.schedule-item-admin{
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    border-bottom: 1px solid silver;
+    gap: 0.7rem;
+}
+
+.admin-cta{
+    padding: 0.7rem 1.4rem;
+    text-decoration: none;
+    color: #eee;
+    background-color: darkgrey;
+    border: 1px solid silver;
+    border-radius: 5px;
+}
+
+.admin-delete{
+    background-color: rgb(224, 59, 59);
+}
+
+.admin-edit{
+    background-color: #1f7edd;
+}
+
+.popup-overlay{
+    width: 100%;
+    min-height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: rgba(20, 20, 20, 0.315);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+
+.popup-hidden{
+    z-index: -5;
+    opacity: 0;
+}
+
+.popup{
+    background-color: #eee;
+    padding: 1rem 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.data-edit{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 20rem;
+}
+
+.data-edit input{
+    padding: 0.5rem;
+}

@@ -21,7 +21,7 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseApp);
 
-app.use("/public", express.static( path.join(__dirname, "public")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 
 app.get("/", async (req, res) => {
@@ -31,30 +31,6 @@ app.get("/", async (req, res) => {
 app.get("/admin", async (req, res) => {
     res.sendFile(__dirname + "/admin.html");
 });
-
-// app.post("/login", async(req, res) => {
-
-//     const username = req.body.email + "@sairamfreshers.com";
-//     const pwd = req.body.password;
-
-//     signInWithEmailAndPassword(auth, username, pwd).then((user) => {
-//         res.status(200).send(user);
-//     }).catch((err) => {
-//         if (err.code === "auth/wrong-password"){
-//             res.send({
-//                 "error": "1"
-//             });
-//         }else if(err.code === "auth/too-many-requests"){
-//             res.send({
-//                 "error": "2"
-//             });
-//         }else if(err.code === "auth/user-not-found"){
-//             res.send({
-//                 "error": "3"
-//             });
-//         }
-//     });
-// })
 
 app.get("/portal", (req, res) => {
     res.sendFile(__dirname + "/portal.html");
@@ -82,7 +58,6 @@ app.get("/admission", (req, res) => {
 app.all("*", (req, res) => {
     res.status(404).send("<h1>ERROR: 404</h1><hr><h1>This path was not found</h1>");
 });
-
 
 app.listen(3000, () => {
     console.log(__dirname);

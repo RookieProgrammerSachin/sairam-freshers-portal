@@ -9,7 +9,7 @@ const userBtnName = document.querySelector(".user-btn-name");
 
 onAuthStateChanged(auth, (user) => {
     if (!user) location.href = '/';
-    else userBtnName.innerHTML = `Welcome, ${user.email.split("@")[0]}`;
+    else userBtnName.innerHTML = `Welcome, ${user.displayName.split(" ")[0]}`;
 });
 
 const populateData = async (domElem) => {
