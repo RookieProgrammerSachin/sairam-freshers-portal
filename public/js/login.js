@@ -4,8 +4,9 @@ const signInBtn = document.querySelector(".sign-in");
 const errHandler = document.querySelector(".error");
 
 onAuthStateChanged(auth, (user) => {
-    if (user) location.href = '/portal';
-})
+    if (user && user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
+    else if (user && user.uid !== "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/portal';
+});
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -18,7 +19,6 @@ const handleSubmit = async (e) => {
     errHandler.innerHTML = '';
 
     signInWithEmailAndPassword(auth, loginDetails.email+"@sairamfreshers.com", loginDetails.password).then((result) => {
-        location.href = '/portal';
     }).catch(err => {
         console.log(err);
         if (err.code === "auth/wrong-password"){
