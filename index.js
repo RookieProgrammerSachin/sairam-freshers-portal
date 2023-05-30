@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 const app = express();
@@ -43,9 +43,44 @@ app.get("/orientation", (req, res) => {
 app.get("/schedule", async (req, res) => {
     const db = getFirestore(firebaseApp);
     const dbData = await getDoc(doc(db, "orientation", "meetings"));
-    console.log(dbData.data());
+    // console.log(dbData.data());
     res.json(dbData.data());
-})
+});
+
+app.post("/delete-schedule", async (req, res) => {
+    const meetingData = req.body;
+    const db = getFirestore(firebaseApp);
+    const docRef = doc(db, "orientation", "meetings");
+    try {
+        await updateDoc(docRef, {
+            data: arrayRemove(meetingData)
+        });
+        res.status(200).json({
+            status: "deleted"
+        });
+    } catch(err) {
+        console.log(err);
+        res.send(err);
+    }
+});
+
+app.post("/add-schedule", async (req, res) => {
+    const meetingData = req.body;
+    console.log(meetingData);
+    const db = getFirestore(firebaseApp);
+    const docRef = doc(db, "orientation", "meetings");
+    try {
+        await updateDoc(docRef, {
+            data: arrayUnion(meetingData)
+        });
+        res.status(200).json({
+            status: "added"
+        });
+    } catch(err) {
+        console.log(err);
+        res.send(err);
+    }
+});
 
 app.get("/guide", (req, res) => {
     res.sendFile(__dirname + "/guide.html");
