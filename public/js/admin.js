@@ -8,23 +8,35 @@ const signOutBtn = document.querySelector(".sign-out");
 const userBtnName = document.querySelector(".user-btn-name");
 const modal = document.querySelector(".popup-overlay");
 const modalInner = document.querySelector(".popup");
+const updateStatusWrapper = document.querySelector(".update-status-wrapper");
+
+var data;
 
 onAuthStateChanged(auth, (user) => {
     if (user && user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") userBtnName.innerHTML = `Welcome, ${user.email.split("@")[0]}`;
     else location.href='/';
 });
 
+const obtainData = async () => {
+    try {
+        const request = await fetch("/schedule");
+        data = await request.json();
+        return data;
+    } catch (error) {
+        return err;
+    }
+}
+
 const populateData = async (domElem) => {
 
     try{
-        const request = await fetch("/schedule");
-        const data = await request.json();
-        // console.log(data);
+        data = await obtainData();
+
         var dataMarkup = '';
         data.data.forEach((entry, i) => {
             dataMarkup += `
             <li>
-                <div class="schedule-item-admin" data-key="${i+1}">
+                <div class="schedule-item-admin" data-key="${entry.id}">
                     <h3 class="schedule-title"><strong>Title:</strong> ${entry.title}</h3>
                     <p class="ff-inter fs-2s"><strong>Time:</strong> ${entry.time}</p>
                     <p class="ff-inter fs-2s"><strong>Link:</strong> ${entry.link}</p>
@@ -52,10 +64,52 @@ const populateData = async (domElem) => {
 
 const toggleModal = (e) => {
     e.preventDefault();
-    console.log(e.target.parentNode.parentNode.dataset.key); // ipo indha key ah vechi dhaan
+    //console.log(e.target.parentNode.parentNode.dataset.key, data.data); // ipo indha key ah vechi dhaan
     // i need to put the values of the obtained data into the popup form
+    if (e.target.parentNode.parentNode.dataset.key) {
+        const meetingTitle = document.querySelector(".meeting-title");
+        const meetingTime = document.querySelector(".meeting-time");
+        const meetingLink = document.querySelector(".meeting-link");
+        const meetingDuration = document.querySelector(".meeting-duration");
+
+        const formInputValue = data.data.filter((values) => values.id === e.target.parentNode.parentNode.dataset.key)[0];
+        console.log(formInputValue);
+        meetingTitle.value = formInputValue.title;
+        meetingTime.value = formInputValue.time;
+        meetingLink.value = formInputValue.link;
+        meetingDuration.value = formInputValue.duration;
+    }
+    // meetingTitle.value = 
     modal.classList.toggle("popup-hidden");
-} 
+}
+
+const showStatus = (text, status) => {
+    updateStatusWrapper.innerHTML = `${status === 0? `<p style="color: red">${text}</p>`:`<p style="color: green">${text}</p>`}`
+    updateStatusWrapper.classList.toggle("update-status-hidden");
+}
+
+const deleteData = async (e) => {
+    e.preventDefault();
+
+    data = await obtainData();
+    //console.log(data.data.filter((values) => values.id === e.target.parentNode.parentNode.dataset.key)[0])
+
+    try {
+        await fetch("/delete-schedule", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data.data.filter((values) => values.id === e.target.parentNode.parentNode.dataset.key)[0])
+        });
+        showStatus("Deletion successful!", 1);
+        populateData(document.querySelector(".admin-container ol"));
+        
+    } catch(err) {
+        console.log(err);
+    }
+}
 
 window.onload = async (e) => {
     loading.classList.add("loaded");
@@ -74,6 +128,7 @@ window.onload = async (e) => {
     
     adminEditBtn.addEventListener("click", toggleModal);
     cancelEditBtn.addEventListener("click", toggleModal);
+    adminDelBtn.addEventListener("click", deleteData);
 }
 
 userBtn.addEventListener("click", (e) => {
