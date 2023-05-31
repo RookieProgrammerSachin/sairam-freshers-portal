@@ -365,6 +365,9 @@ ol{
     padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
+    border: 1px solid silver;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
 }
 
 .data-edit{
@@ -376,4 +379,21 @@ ol{
 
 .data-edit input{
     padding: 0.5rem;
+}
+
+.save-edit{
+    background-color: #3baa3b;
+}
+
+.update-status-wrapper{
+    background-color: white;
+    border-radius: 4px;
+    padding: 1rem 2rem;
+    position: fixed;
+    bottom: 5rem;
+    right: 5rem;
+}
+
+.update-status-hidden{
+    opacity: 0;
 }

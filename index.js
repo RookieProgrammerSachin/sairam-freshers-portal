@@ -2,7 +2,7 @@ import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
 import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, updateDoc, arrayRemove, arrayUnion } from "firebase/firestore";
+import { getFirestore, doc, getDoc, deleteDoc, updateDoc, setDoc, deleteField } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 const app = express();
@@ -48,13 +48,14 @@ app.get("/schedule", async (req, res) => {
 });
 
 app.post("/delete-schedule", async (req, res) => {
-    const meetingData = req.body;
+    const meetingID = req.body.id;
+    const delData = {
+        [meetingID]: deleteField()
+    }
     const db = getFirestore(firebaseApp);
     const docRef = doc(db, "orientation", "meetings");
     try {
-        await updateDoc(docRef, {
-            data: arrayRemove(meetingData)
-        });
+        await updateDoc(docRef, delData);
         res.status(200).json({
             status: "deleted"
         });
@@ -67,12 +68,42 @@ app.post("/delete-schedule", async (req, res) => {
 app.post("/add-schedule", async (req, res) => {
     const meetingData = req.body;
     console.log(meetingData);
+    const addedData = {
+        [meetingData.id]: {
+            title: meetingData.title,
+            link: meetingData.link,
+            duration: meetingData.duration,
+            time: meetingData.time
+        }
+    }
     const db = getFirestore(firebaseApp);
     const docRef = doc(db, "orientation", "meetings");
     try {
-        await updateDoc(docRef, {
-            data: arrayUnion(meetingData)
+        await updateDoc(docRef, addedData);
+        res.status(200).json({
+            status: "added"
         });
+    } catch(err) {
+        console.log(err);
+        res.send(err);
+    }
+});
+
+app.post("/edit-schedule", async (req, res) => {
+    const meetingData = req.body;
+    const modifiedData = {
+        [meetingData.id]: {
+            title: meetingData.title,
+            link: meetingData.link,
+            duration: meetingData.duration,
+            time: meetingData.time
+        }
+    }
+    console.log(modifiedData);
+    const db = getFirestore(firebaseApp);
+    const docRef = doc(db, "orientation", "meetings");
+    try {
+        await setDoc(docRef, modifiedData);
         res.status(200).json({
             status: "added"
         });

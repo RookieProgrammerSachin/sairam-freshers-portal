@@ -28,6 +28,9 @@
     </nav>
 
     <div class="admin-container">
+        <a href="#" class="admin-add admin-cta">+ Add a Schedule </a>
+        <br>
+        <br>
         <ol>
             <li>
                 <div class="schedule-item-admin" data-key="">
@@ -65,19 +68,23 @@
             <br>
             <form class="data-edit">
                 <label for="title">Title</label>
-                <input type="text" name="title" required>
+                <input type="text" name="title" required class="meeting-title">
                 <label for="time">Time</label>
-                <input type="time" name="time" required>
+                <input type="time" name="time" required class="meeting-time">
                 <label for="link">Link</label>
-                <input type="text" name="link" required>
+                <input type="text" name="link" required class="meeting-link">
                 <label for="duration">Duration</label>
-                <input type="text" name="duration" inputmode="numeric" required>
+                <input type="text" name="duration" inputmode="numeric" required class="meeting-duration">
             </form>
             <div style="padding: 2rem 0;">
-                <a href="#" class="save-edit admin-cta admin-edit ff-inter fs-s">Edit</a>
-                <a href="#" class="cancel-edit admin-cta admin-delete ff-inter fs-s">Cancel</a>
+                <a href="#" class="save-edit admin-cta ff-inter fs-s">Save</a>
+                <a href="#" class="cancel-edit admin-cta ff-inter fs-s">Cancel</a>
             </div>
         </div>
+    </div>
+
+    <div class="update-status-wrapper update-status-hidden">
+        
     </div>
 
     <script src="public/js/admin.js" type="module"></script>

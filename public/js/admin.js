@@ -32,27 +32,42 @@ const populateData = async (domElem) => {
     try{
         data = await obtainData();
 
+        // console.log(data);
+
         var dataMarkup = '';
-        data.data.forEach((entry, i) => {
+
+        for(let key in data) {
+            const meeting = data[key];
             dataMarkup += `
             <li>
-                <div class="schedule-item-admin" data-key="${entry.id}">
-                    <h3 class="schedule-title"><strong>Title:</strong> ${entry.title}</h3>
-                    <p class="ff-inter fs-2s"><strong>Time:</strong> ${entry.time}</p>
-                    <p class="ff-inter fs-2s"><strong>Link:</strong> ${entry.link}</p>
-                    <p class="ff-inter fs-2s"><strong>Duration:</strong> ${entry.duration} hour(s)</p>
+                <div class="schedule-item-admin" data-key="${key}">
+                    <h3 class="schedule-title">Title: ${meeting.title}</h3>
+                    <p class="ff-inter fs-2s">Time: ${meeting.time} </p>
+                    <p class="ff-inter fs-2s">Link: ${meeting.link}</p>
+                    <p class="ff-inter fs-2s">Duration: ${meeting.duration} hours</p>
                     <div>
-                        <a href="#" class="admin-cta admin-edit ff-inter fs-s">Edit</a>
-                        <a href="#" class="admin-cta admin-delete ff-inter fs-s">Delete</a>
+                        <a href="#" class="admin-edit admin-cta ff-inter fs-s">Edit</a>
+                        <a href="#" class="admin-delete admin-cta ff-inter fs-s">Delete</a>
                     </div>
                     <br>
                 </div>
             </li>
-            \n
-            `;
-        });
+            `
+        };
+        
         // console.log(dataMarkup);
         domElem.innerHTML = dataMarkup;
+        const adminEditBtns = document.querySelectorAll(".admin-edit");
+        const adminDelBtns = document.querySelectorAll(".admin-delete");
+
+        adminEditBtns.forEach((btn) => btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            toggleModal(e);
+        }));
+        adminDelBtns.forEach((btn) => btn.addEventListener("click", (e) => {
+            e.preventDefault();
+            deleteData(e);
+        }));
 
     }catch(err){
         domElem.innerHTML = `
@@ -66,26 +81,41 @@ const toggleModal = (e) => {
     e.preventDefault();
     //console.log(e.target.parentNode.parentNode.dataset.key, data.data); // ipo indha key ah vechi dhaan
     // i need to put the values of the obtained data into the popup form
+    modal.classList.toggle("popup-hidden");
     if (e.target.parentNode.parentNode.dataset.key) {
         const meetingTitle = document.querySelector(".meeting-title");
         const meetingTime = document.querySelector(".meeting-time");
         const meetingLink = document.querySelector(".meeting-link");
         const meetingDuration = document.querySelector(".meeting-duration");
 
-        const formInputValue = data.data.filter((values) => values.id === e.target.parentNode.parentNode.dataset.key)[0];
-        console.log(formInputValue);
+        var dataId = e.target.parentNode.parentNode.dataset.key;
+        console.log(dataId);
+
+        const formInputValue = data[dataId];
+        console.log(formInputValue, dataId);
+
         meetingTitle.value = formInputValue.title;
         meetingTime.value = formInputValue.time;
         meetingLink.value = formInputValue.link;
         meetingDuration.value = formInputValue.duration;
+
+        const saveEditBtn = document.querySelector(".save-edit");
+        saveEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            console.log("event listadded")
+            updateData(dataId);
+        });
     }
     // meetingTitle.value = 
-    modal.classList.toggle("popup-hidden");
+    // modal.classList.toggle("popup-hidden");
 }
 
 const showStatus = (text, status) => {
     updateStatusWrapper.innerHTML = `${status === 0? `<p style="color: red">${text}</p>`:`<p style="color: green">${text}</p>`}`
     updateStatusWrapper.classList.toggle("update-status-hidden");
+    setTimeout(() => {
+        updateStatusWrapper.classList.toggle("update-status-hidden");
+    }, 2000);
 }
 
 const deleteData = async (e) => {
@@ -101,7 +131,9 @@ const deleteData = async (e) => {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(data.data.filter((values) => values.id === e.target.parentNode.parentNode.dataset.key)[0])
+            body: JSON.stringify({
+                id: e.target.parentNode.parentNode.dataset.key
+            })
         });
         showStatus("Deletion successful!", 1);
         populateData(document.querySelector(".admin-container ol"));
@@ -111,6 +143,68 @@ const deleteData = async (e) => {
     }
 }
 
+const updateData = async (id) => {
+    
+    const formData = document.querySelector(".data-edit");
+    const modifiedData = Object.fromEntries(new FormData(formData).entries());
+    modifiedData.id = id;
+
+    console.log(modifiedData);
+
+    try {
+        await fetch("/edit-schedule", {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(modifiedData)
+        });
+        showStatus("Edit successful!", 1);
+        populateData(document.querySelector(".admin-container ol"));
+        modal.classList.toggle("popup-hidden");
+        
+    } catch(err) {
+        console.log(err);
+    }
+
+}
+
+const addData = async (e) => {
+    e.preventDefault();
+    modal.classList.toggle("popup-hidden");
+
+    document.querySelector(".data-edit").reset();
+    const saveEditBtn = document.querySelector(".save-edit");
+
+    saveEditBtn.addEventListener("click", async (e) => {
+        
+        e.preventDefault();
+        const formData = document.querySelector(".data-edit");
+        const newData = Object.fromEntries(new FormData(formData).entries());
+        newData.id = crypto.randomUUID();
+        console.log("why")
+
+        try {
+            await fetch("/add-schedule", {
+                method: "POST",
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newData)
+            });
+            showStatus("Added successfully!", 1);
+            populateData(document.querySelector(".admin-container ol"));
+            modal.classList.toggle("popup-hidden");
+
+        } catch(err) {
+            console.log(err);
+        }
+    });
+    
+}
+
 window.onload = async (e) => {
     loading.classList.add("loaded");
     setTimeout(() => {
@@ -118,17 +212,15 @@ window.onload = async (e) => {
     }, 300);
 
     const olList = document.querySelector(".admin-container ol");
+    const addSchedule = document.querySelector(".admin-add");
+
+    addSchedule.addEventListener("click", addData);
 
     await populateData(olList);
 
-    const adminEditBtn = document.querySelector(".admin-edit");
-    const adminDelBtn = document.querySelector(".admin-delete");
-    const saveEditBtn = document.querySelector(".save-edit");
     const cancelEditBtn = document.querySelector(".cancel-edit");
     
-    adminEditBtn.addEventListener("click", toggleModal);
     cancelEditBtn.addEventListener("click", toggleModal);
-    adminDelBtn.addEventListener("click", deleteData);
 }
 
 userBtn.addEventListener("click", (e) => {
