@@ -66,9 +66,9 @@ app.post("/delete-schedule", async (req, res) => {
 });
 
 app.post("/add-schedule", async (req, res) => {
-    const meetingData = req.body;
-    console.log(meetingData);
-    const addedData = {
+    let meetingData = req.body;
+    // console.log(meetingData);
+    let addedData = {
         [meetingData.id]: {
             title: meetingData.title,
             link: meetingData.link,
@@ -79,6 +79,7 @@ app.post("/add-schedule", async (req, res) => {
     const db = getFirestore(firebaseApp);
     const docRef = doc(db, "orientation", "meetings");
     try {
+        // console.log(addedData);
         await updateDoc(docRef, addedData);
         res.status(200).json({
             status: "added"
@@ -87,6 +88,8 @@ app.post("/add-schedule", async (req, res) => {
         console.log(err);
         res.send(err);
     }
+    meetingData = {};
+    addedData  = {};
 });
 
 app.post("/edit-schedule", async (req, res) => {
@@ -99,11 +102,11 @@ app.post("/edit-schedule", async (req, res) => {
             time: meetingData.time
         }
     }
-    console.log(modifiedData);
+    // console.log(modifiedData);
     const db = getFirestore(firebaseApp);
     const docRef = doc(db, "orientation", "meetings");
     try {
-        await setDoc(docRef, modifiedData);
+        await setDoc(docRef, modifiedData, { merge: true});
         res.status(200).json({
             status: "added"
         });

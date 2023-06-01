@@ -6,10 +6,14 @@ const userMenu = document.querySelector(".user-menu");
 const chevronIcon = document.querySelector(".chevron-down");
 const signOutBtn = document.querySelector(".sign-out");
 const userBtnName = document.querySelector(".user-btn-name");
+const contentH1 = document.querySelector(".content h1");
 
 onAuthStateChanged(auth, (user) => {
     if (!user) location.href = '/';
-    else userBtnName.innerHTML = `Welcome, ${user.displayName.split(" ")[0]}`;
+    else {
+        userBtnName.innerHTML = `Welcome, ${user.displayName.split(" ")[0]}`;
+        contentH1.innerHTML = `Hello, ${user.displayName}`;
+    };
 });
 
 window.onload = (e) => {

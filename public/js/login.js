@@ -13,8 +13,6 @@ const handleSubmit = async (e) => {
 
     const loginDetails = Object.fromEntries(new FormData(e.target).entries());
     signInBtn.classList.toggle("sign-in-disabled");
-
-    console.log(loginDetails)
     
     errHandler.innerHTML = '';
 

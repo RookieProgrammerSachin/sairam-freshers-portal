@@ -79,8 +79,7 @@ const populateData = async (domElem) => {
 
 const toggleModal = (e) => {
     e.preventDefault();
-    //console.log(e.target.parentNode.parentNode.dataset.key, data.data); // ipo indha key ah vechi dhaan
-    // i need to put the values of the obtained data into the popup form
+   
     modal.classList.toggle("popup-hidden");
     if (e.target.parentNode.parentNode.dataset.key) {
         const meetingTitle = document.querySelector(".meeting-title");
@@ -102,9 +101,16 @@ const toggleModal = (e) => {
         const saveEditBtn = document.querySelector(".save-edit");
         saveEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
+            e.stopImmediatePropagation();
             console.log("event listadded")
             updateData(dataId);
-        });
+        }, {once: true});
+        // saveEditBtn.removeEventListener("click", (e) => {
+        //     e.preventDefault();
+        //     e.stopImmediatePropagation();
+        //     console.log("event listadded")
+        //     updateData(dataId);
+        // });
     }
     // meetingTitle.value = 
     // modal.classList.toggle("popup-hidden");
@@ -177,13 +183,22 @@ const addData = async (e) => {
     document.querySelector(".data-edit").reset();
     const saveEditBtn = document.querySelector(".save-edit");
 
-    saveEditBtn.addEventListener("click", async (e) => {
+    const result = await obtainData();
+
+    console.log("addData() called here");
+
+    var formData;
+    var newData;
+
+    const handleAddClick = async (e) => {
         
         e.preventDefault();
-        const formData = document.querySelector(".data-edit");
-        const newData = Object.fromEntries(new FormData(formData).entries());
+        e.stopImmediatePropagation();
+        formData = document.querySelector(".data-edit");
+        newData = Object.fromEntries(new FormData(formData).entries());
         newData.id = crypto.randomUUID();
-        console.log("why")
+
+        console.log("addData() called inside click eventlistener before POST request");
 
         try {
             await fetch("/add-schedule", {
@@ -197,12 +212,19 @@ const addData = async (e) => {
             showStatus("Added successfully!", 1);
             populateData(document.querySelector(".admin-container ol"));
             modal.classList.toggle("popup-hidden");
-
+            formData = {};
+            newData = {};
+            console.log("addData() called inside click eventlistener after POST request");
         } catch(err) {
             console.log(err);
         }
-    });
-    
+    }
+
+    saveEditBtn.addEventListener("click", (e) => handleAddClick(e), { once: true});
+    formData = {};
+    newData = {};
+    console.log("addData() called outside click but cleared formData and newData", formData);
+    // saveEditBtn.removeEventListener("click", handleAddClick);
 }
 
 window.onload = async (e) => {

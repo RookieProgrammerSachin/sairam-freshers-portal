@@ -6,10 +6,14 @@ const userMenu = document.querySelector(".user-menu");
 const chevronIcon = document.querySelector(".chevron-down");
 const signOutBtn = document.querySelector(".sign-out");
 const userBtnName = document.querySelector(".user-btn-name");
+const contentH1 = document.querySelector(".content h1");
 
 onAuthStateChanged(auth, (user) => {
     if (!user) location.href = '/';
-    else userBtnName.innerHTML = `Welcome, ${user.displayName.split(" ")[0]}`;
+    else {
+        userBtnName.innerHTML = `Welcome, ${user.displayName.split(" ")[0]}`;
+        contentH1.innerHTML = `Hello, ${user.displayName}`;
+    };
 });
 
 const populateData = async (domElem) => {
@@ -19,7 +23,8 @@ const populateData = async (domElem) => {
         const data = await request.json();
         // console.log(data);
         var dataMarkup = '';
-        data.data.forEach(entry => {
+        for(let key in data){
+            const entry = data[key];
             dataMarkup += `
             <div class="schedule-item">
                 <img src="public/images/conference.png" alt="Online Meeting" class="schedule-icon">
@@ -28,7 +33,7 @@ const populateData = async (domElem) => {
             </div>
             \n
             `;
-        });
+        }
         // console.log(dataMarkup);
         domElem.innerHTML = dataMarkup;
 
