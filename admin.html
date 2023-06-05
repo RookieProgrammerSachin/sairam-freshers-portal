@@ -27,40 +27,39 @@
         </button>
     </nav>
 
-    <div class="admin-container">
-        <a href="#" class="admin-add admin-cta">+ Add a Schedule </a>
-        <br>
-        <br>
-        <ol>
-            <li>
-                <div class="schedule-item-admin" data-key="">
-                    <h3 class="schedule-title"></h3>
-                    <p class="ff-inter fs-2s"> </p>
-                    <p class="ff-inter fs-2s"> </p>
-                    <p class="ff-inter fs-2s"></p>
-                    <div>
-                        <a href="#" class="admin-edit ff-inter fs-s"></a>
-                        <a href="#" class="admin-delete ff-inter fs-s"></a>
+    <main class="main-container">
+        <div class="menu">
+            <a href="#edit-student" class="menu-link show-student ff-inter fs-2s">Edit Student Details</a>
+            <a href="#edit-schedule" class="menu-link show-schedule ff-inter fs-2s fw-600">Edit Schedule Details</a>
+        </div>
+
+        <div class="admin-container">
+            <div class="schedule-container">
+            <a href="#" class="admin-add admin-cta">+ Add a Schedule </a>
+            <br>
+            <br>
+            <ol>
+                <li>
+                    <div class="schedule-item-admin" data-key="">
+                        <h3 class="schedule-title"></h3>
+                        <p class="ff-inter fs-2s"> </p>
+                        <p class="ff-inter fs-2s"> </p>
+                        <p class="ff-inter fs-2s"></p>
+                        <div>
+                            <a href="#" class="admin-edit ff-inter fs-s"></a>
+                            <a href="#" class="admin-delete ff-inter fs-s"></a>
+                        </div>
+                        <br>
                     </div>
-                    <br>
-                </div>
-            </li>
-            <!-- <li>
-                <div class="schedule-item-admin" data-key="2">
-                    <h3 class="schedule-title">Meeting</h3>
-                    <p class="ff-inter fs-2s">Time: </p>
-                    <p class="ff-inter fs-2s">Link: </p>
-                    <p class="ff-inter fs-2s">Duration: </p>
-                    <div>
-                        <a href="#" class="admin-cta admin-edit ff-inter fs-s">Edit</a>
-                        <a href="#" class="admin-cta admin-delete ff-inter fs-s">Delete</a>
-                    </div>
-                    <br>
-                </div>
-            </li> -->
-        </ol>
+                </li>
+            </ol>
+            </div>
+            <div class="student-container hidden">
+                table here
+            </div>
+        </div>
         
-    </div>
+    </main>
 
     <div class="popup-overlay popup-hidden">
         <div class="popup">

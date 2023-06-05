@@ -302,14 +302,13 @@ nav{
 }
 
 .admin-container{
-    background: rgb(228, 228, 228);
-    max-width: 70%;
+    background: #eee;
+    /* max-width: 70%; */
+    width: 100%;
     border: 1px solid silver;
     border-radius: 5px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
     padding: 2rem 4rem;
-    margin: auto;
-    margin-top: 3rem;
 }
 
 ol{
@@ -396,4 +395,8 @@ ol{
 
 .update-status-hidden{
     opacity: 0;
+}
+
+.hidden{
+    display: none;
 }

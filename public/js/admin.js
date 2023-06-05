@@ -9,6 +9,10 @@ const userBtnName = document.querySelector(".user-btn-name");
 const modal = document.querySelector(".popup-overlay");
 const modalInner = document.querySelector(".popup");
 const updateStatusWrapper = document.querySelector(".update-status-wrapper");
+const showStudentLink = document.querySelector(".show-student");
+const showScheduleLink = document.querySelector(".show-schedule");
+const studentDetails = document.querySelector(".student-container");
+const scheduleDetails = document.querySelector(".schedule-container");
 
 var data;
 
@@ -16,6 +20,23 @@ onAuthStateChanged(auth, (user) => {
     if (user && user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") userBtnName.innerHTML = `Welcome, ${user.email.split("@")[0]}`;
     else location.href='/';
 });
+
+const showStudents = (e) => {
+    if (studentDetails.classList.contains("hidden")) studentDetails.classList.remove("hidden");
+    if (!scheduleDetails.classList.contains("hidden")) scheduleDetails.classList.add("hidden");
+    if (!showStudentLink.classList.contains("fw-600")) showStudentLink.classList.add("fw-600");
+    if (showScheduleLink.classList.contains("fw-600")) showScheduleLink.classList.remove("fw-600");
+}
+
+const showSchedule = (e) => {
+    if (!studentDetails.classList.contains("hidden")) studentDetails.classList.add("hidden");
+    if (scheduleDetails.classList.contains("hidden")) scheduleDetails.classList.remove("hidden");
+    if (showStudentLink.classList.contains("fw-600")) showStudentLink.classList.remove("fw-600");
+    if (!showScheduleLink.classList.contains("fw-600")) showScheduleLink.classList.add("fw-600");
+}
+
+showStudentLink.onclick = showStudents;
+showScheduleLink.onclick = showSchedule;
 
 const obtainData = async () => {
     try {
@@ -233,7 +254,7 @@ window.onload = async (e) => {
         loading.style.display = "none";
     }, 300);
 
-    const olList = document.querySelector(".admin-container ol");
+    const olList = document.querySelector(".schedule-container ol");
     const addSchedule = document.querySelector(".admin-add");
 
     addSchedule.addEventListener("click", addData);
