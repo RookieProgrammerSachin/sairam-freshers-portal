@@ -19,7 +19,7 @@ const firebaseConfig = {
     appId: "1:60215698703:web:f33b8689373865bf5b8a7a"
 };
 const firebaseApp = initializeApp(firebaseConfig);
-const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
 
 app.use("/public", express.static(path.join(__dirname, "public")));
 
@@ -113,6 +113,28 @@ app.post("/edit-schedule", async (req, res) => {
     } catch(err) {
         console.log(err);
         res.send(err);
+    }
+});
+
+app.post("/save-info", async (req, res) => {
+    const info = req.body.data;
+    const id = req.body.id;
+
+    const docRef = doc(db, "students", id);
+
+    console.log(docRef);
+    console.log(info);
+    res.status(200).send({
+        state: "ok"
+    });
+
+    try{
+        // await setDoc(docRef, {
+        //     hasSet: true,
+
+        // }) 
+    }catch(err) {
+
     }
 });
 
