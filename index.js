@@ -120,6 +120,10 @@ app.get("/guide", (req, res) => {
     res.sendFile(__dirname + "/guide.html");
 });
 
+app.get("/profile", (req, res) => {
+    res.sendFile(__dirname + "/profile.html");
+});
+
 app.get("/admission", (req, res) => {
     res.sendFile(__dirname + "/admission.html");
 });

@@ -10,13 +10,14 @@ onAuthStateChanged(auth, (user) => {
 
 const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const loginDetails = Object.fromEntries(new FormData(e.target).entries());
     signInBtn.classList.toggle("sign-in-disabled");
     
     errHandler.innerHTML = '';
-
+    
     signInWithEmailAndPassword(auth, loginDetails.email+"@sairamfreshers.com", loginDetails.password).then((result) => {
+        if (result.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
     }).catch(err => {
         console.log(err);
         if (err.code === "auth/wrong-password"){

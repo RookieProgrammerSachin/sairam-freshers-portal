@@ -400,3 +400,80 @@ ol{
 .hidden{
     display: none;
 }
+
+.table {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 10px;
+    padding: 3%;
+  }
+  
+.heading {
+    grid-column: 1 / span 2;
+    text-align: center;
+    font-weight: bold;
+    background-color: lightgray;
+    padding: 1%;
+}
+
+.table-section{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-column: 1 /span 2;
+    gap: 1rem
+}
+
+.partition{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+  
+.row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+  
+.field {
+    font-weight: bold;
+}
+  
+.value {
+    font-style: italic;
+}
+
+input{
+    padding: 0.5rem
+}
+  
+.heading2{
+    text-align: center;
+    font-weight: bold;
+    background-color: lightgray;
+    padding: 1.9%;
+}
+
+.row1 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+/* .schedule-wrapper p{
+    padding-left: 3%;
+} */
+
+.declaration{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.submit-form{
+    border: 1px solid silver;
+    cursor: pointer;
+    max-width: fit-content;
+    padding: 1rem 2rem;
+    border-radius: 5px;
+    text-align: center;
+}
