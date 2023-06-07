@@ -193,6 +193,13 @@ nav{
     gap: 0.7rem
 }
 
+.student-container{
+    display: flex;
+    flex-direction: column;
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
 .schedule-item{
     display: flex;
     justify-content: space-between;
@@ -485,4 +492,31 @@ input{
     padding: 1rem 2rem;
     border-radius: 5px;
     text-align: center;    
+}
+
+.student-request{
+    display: flex;
+    justify-content: space-between;
+    padding: 2rem;
+    align-items: center;
+}
+
+.accept-req{
+    padding: 0.7rem 1.4rem;
+    text-decoration: none;
+    color: #eee;
+    background-color: #3baa3b;
+    border: 1px solid silver;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.deny-req{
+    padding: 0.7rem 1.4rem;
+    text-decoration: none;
+    color: #eee;
+    background-color: #c94545;
+    border: 1px solid silver;
+    border-radius: 5px;
+    cursor: pointer;
 }

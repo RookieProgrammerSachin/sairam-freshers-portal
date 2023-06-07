@@ -1,12 +1,12 @@
-import { auth, onAuthStateChanged, signInWithEmailAndPassword, setPersistence, browserSessionPersistence } from "/public/js/config.js";
+import { auth, onAuthStateChanged, signInWithEmailAndPassword, setPersistence, browserSessionPersistence, db,  doc, setDoc, getDocs, collection } from "/public/js/config.js";
 
 const signInBtn = document.querySelector(".sign-in");
 const errHandler = document.querySelector(".error");
 
-onAuthStateChanged(auth, (user) => {
-    if (user && user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
-    else if (user && user.uid !== "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/portal';
-});
+// onAuthStateChanged(auth, (user) => {
+//     if (user && user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
+//     else if (user && user.uid !== "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/portal';
+// });
 
 const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,8 +17,17 @@ const handleSubmit = async (e) => {
     errHandler.innerHTML = '';
 
     setPersistence(auth, browserSessionPersistence).then(() => {
-        signInWithEmailAndPassword(auth, loginDetails.email+"@sairamfreshers.com", loginDetails.password).then((result) => {
-            if (result.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
+        signInWithEmailAndPassword(auth, loginDetails.email+"@sairamfreshers.com", loginDetails.password).then( async (result) => {
+            if (result.user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
+            const docRef = doc(db, "students", auth.currentUser.email.split("@")[0]);
+            const docSnaps = await getDocs(collection(db, "students"));
+            // console.log(docSnaps);
+            if (docSnaps.docs.some((elem) => elem.id !== email.value)){
+                await setDoc(docRef, {
+                    hasSet: false
+                });
+                location.href = '/portal'
+            }
         }).catch(err => {
             console.log(err);
             if (err.code === "auth/wrong-password"){

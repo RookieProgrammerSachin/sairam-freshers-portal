@@ -1,4 +1,4 @@
-import { auth, signOut, onAuthStateChanged, db, doc, getDoc } from "./config.js";
+import { auth, signOut, onAuthStateChanged, db, doc, getDoc, collection, getDocs, setDoc } from "./config.js";
 
 const loading = document.querySelector(".loading");
 const userBtn = document.querySelector(".user-btn");
@@ -19,6 +19,23 @@ onAuthStateChanged(auth, (user) => {
         contentH1.innerHTML = `Hello, ${user.displayName}`;
     };
     checkForm();
+    reqBtn.onclick = async (e) => {
+        try {
+            const docRef = await doc(db, "requests", user.email.split("@")[0]);
+            console.log(docRef)
+            const reqRef = await getDocs(collection(db, "requests"));
+            console.log(reqRef)
+            if (reqRef.docs.some(elem => elem.id !== user.email.split("@")[0])){
+                await setDoc(docRef, {
+                    req: true
+                });
+                alert("Edit request sent successfully!");
+            }
+        } catch (error) {
+            console.log(error)
+            alert("There was an error in requesting edit. Please try again");
+        }
+    }
 });
 
 const handleForm = async () => {
@@ -29,6 +46,7 @@ const handleForm = async () => {
         let key = slugify(entry.parentNode.parentNode.children[0].innerText);
         personalDetailsData[key] = entry.value;
     });
+    personalDetailsData.hostel = document.querySelector('input[type = radio]:checked').value;
     console.log(personalDetailsData);
     
     const currentResidential = document.querySelectorAll(".current-residential-address input");
@@ -95,7 +113,9 @@ const handleForm = async () => {
         schoolCollegeAddress: schoolCollegeAddressData,
         familyDetails: familyDetailsData,
         fatherDetails: fatherDetailsData,
-        motherDetails: motherDetailsData
+        motherDetails: motherDetailsData,
+        place: document.querySelector("#place").value,
+        date: document.querySelector("#date").value
     }
 
     const reqBody = {
@@ -106,7 +126,7 @@ const handleForm = async () => {
     try{
         
         submitBtn.innerHTML = `<span class="loader"></span>`;
-        submitBtn.classList.add("sign-in-disabled");
+        submitBtn.classList.add("sign-in-disabled");    
 
         await fetch("/save-info", {
             method: "POST",
@@ -130,7 +150,7 @@ const checkForm = async () => {
     try{
         const docSnap = await getDoc(docRef);
     
-        if (docSnap.exists()){
+        if (docSnap.data().hasSet === true){
             submitBtn.classList.add("hidden");
             reqBtn.classList.remove("hidden");
             
@@ -202,7 +222,76 @@ const checkForm = async () => {
             console.log(motherDetailsData);
 
 
-        } 
+        } else {
+            const docData = docSnap.data();
+            console.log(docData);
+            
+            if (docData.personalDetails === undefined) return;
+
+            const personalDetails = document.querySelectorAll(".personal-details input");
+            const personalDetailsData = docData.personalDetails;
+            personalDetails.forEach((entry) => {
+                entry.value = personalDetailsData[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(personalDetailsData);
+            
+            const currentResidential = document.querySelectorAll(".current-residential-address input");
+            const currentResidentialDetails = docData.currentResidential;
+            currentResidential.forEach((entry) => {
+                entry.value = currentResidentialDetails[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(currentResidentialDetails);
+            
+            const permanentAddress = document.querySelectorAll(".permanent-residential-address input");
+            const permanentAddressDetails = docData.permanentAddress;
+            permanentAddress.forEach((entry) => {
+                entry.value = permanentAddressDetails[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(permanentAddressDetails);
+            
+            const educationDetails = document.querySelectorAll(".education-details input");
+            const educationDetailsData = docData.educationDetails;
+            educationDetails.forEach((entry) => {
+                entry.value = educationDetailsData[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(educationDetailsData);
+            
+            const schoolCollegeAddress = document.querySelectorAll(".school input");
+            const schoolCollegeAddressData = docData.schoolCollegeAddress;
+            schoolCollegeAddress.forEach((entry) => {
+                entry.value = schoolCollegeAddressData[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(schoolCollegeAddressData);
+    
+            const familyDetails = document.querySelectorAll(".family-details input");
+            const familyDetailsData = docData.familyDetails;
+            familyDetails.forEach((entry) => {
+                entry.value = familyDetailsData[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(familyDetailsData);
+    
+            const fatherDetails = document.querySelectorAll(".father-details input");
+            const fatherDetailsData = docData.fatherDetails;
+            fatherDetails.forEach((entry) => {
+                entry.value = fatherDetailsData[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(fatherDetailsData);
+    
+            const motherDetails = document.querySelectorAll(".mother-details input");
+            const motherDetailsData = docData.motherDetails;
+            motherDetails.forEach((entry) => {
+                entry.value = motherDetailsData[slugify(entry.parentNode.parentNode.children[0].innerText)];
+                // entry.setAttribute("disabled", true);
+            });
+            console.log(motherDetailsData);            
+        }
 
     } catch(err) {
         console.log(err);

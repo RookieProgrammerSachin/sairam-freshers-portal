@@ -76,8 +76,8 @@
                             </div>
                             <div class="row">
                                 <div class="field">Hostel  ?</div>
-                                <div class="value"><input   type="radio" name="inputdata" id="hyes" value="yes"><label for="hyes">Yes</label>
-                                    <input   type="radio" id="hno" name="inputdata" value="no"><label for="hno">No</label></div>
+                                <div class="value"><input   type="radio" name="hostel" id="hyes" value="yes"><label for="hyes">Yes</label>
+                                    <input   type="radio" id="hno" name="hostel" value="no"><label for="hno">No</label></div>
                             </div>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
                             <div class="heading2" colspan="2">CURRENT RESIDENTIAL ADDRESS</div>
                         <div class="row">
                             <div class="field">Door No. / Plot No. /Street Name</div>
-                            <div class="value"><input   type="text" inputmode="numeric" pattern="[0-9]{3}" id="inputdata" placeholder="Enter your Door No./ Plot No./ Street Name"></div>
+                            <div class="value"><input   type="text" id="inputdata" placeholder="Enter your Door No./ Plot No./ Street Name"></div>
                         </div>
                         <div class="row">
                             <div class="field">Area / Mandal</div>
@@ -385,9 +385,9 @@
                     
                 </div>
 
-                <p class="ff-inter fs-2s">Place: <input type="text" id="inputdata" id="inputdata" placeholder="Enter your Place"></p>
+                <p class="ff-inter fs-2s">Place: <input type="text" id="place" placeholder="Enter your Place"></p>
                 <br>
-                <p class="ff-inter fs-2s">Date: <input type="date" id="inputdata" id="inputdata" placeholder="Enter your Date"></p>
+                <p class="ff-inter fs-2s">Date: <input type="date" id="date" placeholder="Enter your Date"></p>
                 <div class="declaration fs-2s">
                         <h2 class="ff-inter">DECLARATION</h2>
                         <div style="display: flex; gap: 1rem">
@@ -396,8 +396,8 @@
                         
                 </div>
                 <br>
-                <button class="submit-form fs-2s">Submit</button>
-                <button class="request-edit fs-2s hidden">Request edit</button>
+                <button type="submit" class="submit-form fs-2s">Submit</button>
+                <button type="button" class="request-edit fs-2s hidden">Request edit</button>
             </form>
         </div>
     </main>

@@ -1,8 +1,7 @@
 import express from "express";
 import path from "path";
 import { fileURLToPath } from "url";
-import { getAuth } from "firebase/auth";
-import { getFirestore, doc, getDoc, deleteDoc, updateDoc, setDoc, deleteField } from "firebase/firestore";
+import { getFirestore, doc, getDoc, updateDoc, setDoc, deleteField } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 const app = express();
@@ -128,8 +127,8 @@ app.post("/save-info", async (req, res) => {
 
     const docRef = doc(db, "students", id);
 
-    console.log(docRef);
-    console.log(info);
+    // console.log(docRef);
+    // console.log(info);
     
     try{
         await setDoc(docRef, {
@@ -141,7 +140,9 @@ app.post("/save-info", async (req, res) => {
             schoolCollegeAddress: info.schoolCollegeAddress,
             familyDetails: info.familyDetails,
             fatherDetails: info.fatherDetails,
-            motherDetails: info.motherDetails
+            motherDetails: info.motherDetails,
+            place: info.place,
+            date: info.date
         });
         
         res.status(200).json({

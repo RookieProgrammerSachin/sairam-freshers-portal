@@ -66,9 +66,10 @@ const populateData = async (domElem) => {
                     <p class="ff-inter fs-2s">Time: ${meeting.time} </p>
                     <p class="ff-inter fs-2s">Link: ${meeting.link}</p>
                     <p class="ff-inter fs-2s">Duration: ${meeting.duration} hours</p>
+                    <br>
                     <div>
-                        <a href="#" class="admin-edit admin-cta ff-inter fs-s">Edit</a>
-                        <a href="#" class="admin-delete admin-cta ff-inter fs-s">Delete</a>
+                        <a href="#" class="admin-edit admin-cta ff-inter fs-2s">Edit</a>
+                        <a href="#" class="admin-delete admin-cta ff-inter fs-2s">Delete</a>
                     </div>
                     <br>
                 </div>
