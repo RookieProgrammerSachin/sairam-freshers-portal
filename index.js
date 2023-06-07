@@ -42,9 +42,15 @@ app.get("/orientation", (req, res) => {
 
 app.get("/schedule", async (req, res) => {
     const db = getFirestore(firebaseApp);
-    const dbData = await getDoc(doc(db, "orientation", "meetings"));
-    // console.log(dbData.data());
-    res.json(dbData.data());
+    try {
+        const dbData = await getDoc(doc(db, "orientation", "meetings"));
+        // console.log(dbData.data());
+        res.status(200).json(dbData.data());
+    } catch (err) {
+        res.status(500).json({
+            state: "Error loading data"
+        });
+    }
 });
 
 app.post("/delete-schedule", async (req, res) => {
@@ -124,17 +130,28 @@ app.post("/save-info", async (req, res) => {
 
     console.log(docRef);
     console.log(info);
-    res.status(200).send({
-        state: "ok"
-    });
-
+    
     try{
-        // await setDoc(docRef, {
-        //     hasSet: true,
-
-        // }) 
+        await setDoc(docRef, {
+            hasSet: true,
+            personalDetails: info.personalDetails,
+            currentResidential: info.currentResidential,
+            permanentAddress: info.permanentAddress,
+            educationDetails: info.educationDetails,
+            schoolCollegeAddress: info.schoolCollegeAddress,
+            familyDetails: info.familyDetails,
+            fatherDetails: info.fatherDetails,
+            motherDetails: info.motherDetails
+        });
+        
+        res.status(200).json({
+            state: "ok"
+        });
     }catch(err) {
-
+        console.log(err);
+        res.status(500).json({
+            state: "Internal Server Error"
+        });
     }
 });
 
