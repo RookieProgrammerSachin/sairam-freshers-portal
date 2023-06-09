@@ -19,15 +19,25 @@ const handleSubmit = async (e) => {
     setPersistence(auth, browserSessionPersistence).then(() => {
         signInWithEmailAndPassword(auth, loginDetails.email+"@sairamfreshers.com", loginDetails.password).then( async (result) => {
             if (result.user.uid === "nW2xockgUwdXcSpBZTOCoWSsc1h1") location.href = '/admin';
-            const docRef = doc(db, "students", auth.currentUser.email.split("@")[0]);
             const docSnaps = await getDocs(collection(db, "students"));
-            // console.log(docSnaps);
-            if (docSnaps.docs.some((elem) => elem.id !== email.value)){
-                await setDoc(docRef, {
-                    hasSet: false
-                });
-                location.href = '/portal'
+            console.log(docSnaps.docs);
+            let found = false;
+            for(let id in docSnaps.docs) {
+                if (docSnaps.docs[id]['id'] === loginDetails.email){
+                    console.log("inga varuhdu")
+                    found = true;
+                    break;
+                }
             }
+            if (found === false) {
+                // console.log(docSnaps.docs[id]['id'] + " " + loginDetails.email);
+                console.log("inga")
+                const docRef = doc(db, "students", auth.currentUser.email.split("@")[0]);
+                await setDoc(docRef, {
+                    hasSet: false   
+                });
+            }
+            location.href = '/portal'
         }).catch(err => {
             console.log(err);
             if (err.code === "auth/wrong-password"){
